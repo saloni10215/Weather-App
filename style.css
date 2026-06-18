@@ -5,145 +5,118 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background: #f5f5f7;
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: 0.3s;
 }
 
-.calculator {
-    width: 380px;
+.weather-container {
+    width: 400px;
     background: white;
     padding: 25px;
-    border-radius: 25px;
+    border-radius: 20px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: 0.3s;
 }
 
-#darkModeBtn {
-    width: 100%;
-    margin-bottom: 15px;
-    padding: 12px;
-    border: none;
-    border-radius: 12px;
-    background: #111827;
-    color: white;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-#display {
-    width: 100%;
-    height: 80px;
-    border: none;
-    outline: none;
-    background: #f3f4f6;
-    border-radius: 15px;
-    font-size: 32px;
-    text-align: right;
-    padding: 15px;
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
 }
 
-.buttons {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
+h1 {
+    font-size: 28px;
 }
 
-button {
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#cityInput {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+#searchBtn {
+    padding: 12px 18px;
     border: none;
-    border-radius: 15px;
-    padding: 20px;
-    font-size: 20px;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
     cursor: pointer;
-    background: #e5e7eb;
 }
 
-button:hover {
+#searchBtn:hover {
     opacity: 0.9;
 }
 
-.buttons button:nth-child(4),
-.buttons button:nth-child(8),
-.buttons button:nth-child(12),
-.buttons button:nth-child(16) {
-    background: #2563eb;
-    color: white;
+#searchBtn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
 }
 
-.buttons button:nth-child(15) {
-    background: #10b981;
-    color: white;
-}
-
-#backspace {
-    grid-column: span 2;
-    background: #f59e0b;
-    color: white;
-}
-
-#clear {
-    grid-column: span 2;
-    background: #ef4444;
-    color: white;
-}
-
-/* Dark Mode */
-
-.dark-mode {
-    background: #111827;
-}
-
-.dark-mode .calculator {
-    background: #1f2937;
-}
-
-.dark-mode #display {
-    background: #374151;
-    color: white;
-}
-
-.dark-mode .buttons button {
-    background: #4b5563;
-    color: white;
-}
-
-.dark-mode .buttons button:nth-child(4),
-.dark-mode .buttons button:nth-child(8),
-.dark-mode .buttons button:nth-child(12),
-.dark-mode .buttons button:nth-child(16) {
-    background: #2563eb;
-}
-
-.dark-mode #backspace {
-    background: #f59e0b;
-}
-
-.dark-mode #clear {
-    background: #ef4444;
-}
-h3 {
-    margin-top: 20px;
-    margin-bottom: 10px;
-}
-
-#history {
-    list-style: none;
-    max-height: 150px;
-    overflow-y: auto;
-}
-
-#history li {
-    background: #f3f4f6;
-    padding: 10px;
-    margin-bottom: 8px;
+#themeToggle {
+    padding: 10px 14px;
+    border: none;
     border-radius: 10px;
-    font-size: 14px;
+    cursor: pointer;
 }
 
-.dark-mode #history li {
-    background: #374151;
+#weatherResult {
+    margin-top: 20px;
+}
+
+#weatherResult p {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+#weatherIcon {
+    width: 100px;
+    height: 100px;
+}
+
+/* DARK MODE */
+
+body.dark {
+    background: #121212;
     color: white;
+}
+
+body.dark .weather-container {
+    background: #1e1e1e;
+    color: white;
+}
+
+body.dark #cityInput {
+    background: #2c2c2c;
+    color: white;
+    border: 1px solid #444;
+}
+
+body.dark #themeToggle {
+    background: #333;
+    color: white;
+}
+
+@media (max-width: 500px) {
+    .weather-container {
+        width: 90%;
+    }
+
+    .top-bar {
+        flex-direction: column;
+        gap: 10px;
+    }
 }

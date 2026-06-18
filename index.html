@@ -3,43 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculator App</title>
+    <title>Weather App</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="calculator">
+<div class="weather-container">
 
-    <button id="darkModeBtn">🌙 Dark Mode</button>
+    <div class="top-bar">
+        <h1>Weather App</h1>
 
-    <input type="text" id="display" readonly>
-    <h3>History</h3>
-<ul id="history"></ul>
+        <button id="themeToggle">
+            🌙 Dark Mode
+        </button>
+    </div>
 
-    <div class="buttons">
+    <div class="search-box">
+        <input
+            type="text"
+            id="cityInput"
+            placeholder="Enter city name"
+        >
+        <button id="searchBtn">Search</button>
+    </div>
 
-        <button>7</button>
-        <button>8</button>
-        <button>9</button>
-        <button>/</button>
+    <div id="weatherResult">
 
-        <button>4</button>
-        <button>5</button>
-        <button>6</button>
-        <button>*</button>
+        <img id="weatherIcon" src="" alt="Weather Icon">
 
-        <button>1</button>
-        <button>2</button>
-        <button>3</button>
-        <button>-</button>
+        <h2 id="cityName">City Name</h2>
 
-        <button>0</button>
-        <button>.</button>
-        <button>=</button>
-        <button>+</button>
+        <p id="temperature">🌡️ Temperature: --°C</p>
 
-        <button id="backspace">⌫</button>
-        <button id="clear">C</button>
+        <p id="feelsLike">🤗 Feels Like: --°C</p>
+
+        <p id="description">☁️ Weather: --</p>
+
+        <p id="humidity">💧 Humidity: --%</p>
+
+        <p id="wind">🌬️ Wind Speed: -- m/s</p>
 
     </div>
 

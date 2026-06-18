@@ -1,158 +1,155 @@
-const display = document.getElementById("display");
-const buttons = document.querySelectorAll(".buttons button");
-const darkModeBtn = document.getElementById("darkModeBtn");
-const historyList = document.getElementById("history");
+const searchBtn = document.getElementById("searchBtn");
+const cityInput = document.getElementById("cityInput");
 
-// Load History
-let history = JSON.parse(localStorage.getItem("history")) || [];
+const cityName = document.getElementById("cityName");
+const temperature = document.getElementById("temperature");
+const feelsLike = document.getElementById("feelsLike");
+const description = document.getElementById("description");
+const humidity = document.getElementById("humidity");
+const wind = document.getElementById("wind");
+const weatherIcon = document.getElementById("weatherIcon");
 
-history.forEach(item => {
-    addHistory(item);
-});
+const themeToggle = document.getElementById("themeToggle");
 
-// Calculator Buttons
-buttons.forEach(button => {
+const apiKey = "df5e97aeee149fc442b23eedbb625a10";
 
-    button.addEventListener("click", function () {
+/* =========================
+   WEATHER FUNCTION
+========================= */
 
-        const value = this.textContent;
+searchBtn.addEventListener("click", getWeather);
 
-        if (value === "C") {
+async function getWeather() {
 
-            display.value = "";
+    const city = cityInput.value.trim();
 
-        } else if (value === "⌫") {
+    if (city === "") {
+        alert("Please enter a city name");
+        return;
+    }
 
-            display.value = display.value.slice(0, -1);
+    try {
 
-        } else if (value === "=") {
+        searchBtn.textContent = "Loading...";
+        searchBtn.disabled = true;
 
-            try {
+        const response = await fetch(
+            `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
+        );
 
-                const expression = display.value;
+        const data = await response.json();
 
-                const result = eval(expression);
+        if (Number(data.cod) !== 200) {
 
-                display.value = result;
+            cityName.textContent = "City Not Found";
+            temperature.textContent = "🌡️ Temperature: --°C";
+            feelsLike.textContent = "🤗 Feels Like: --°C";
+            description.textContent = "☁️ Weather: --";
+            humidity.textContent = "💧 Humidity: --%";
+            wind.textContent = "🌬️ Wind Speed: -- m/s";
+            weatherIcon.src = "";
 
-                const historyItem =
-                    `${expression} = ${result}`;
-
-                history.unshift(historyItem);
-
-                localStorage.setItem(
-                    "history",
-                    JSON.stringify(history)
-                );
-
-                addHistory(historyItem);
-
-            } catch {
-
-                display.value = "Error";
-
-            }
-
-        } else {
-
-            display.value += value;
-
+            alert(data.message);
+            return;
         }
 
-    });
+        cityName.textContent =
+            `${data.name}, ${data.sys.country}`;
 
-});
+        temperature.textContent =
+            `🌡️ Temperature: ${data.main.temp}°C`;
 
-// Keyboard Support
-document.addEventListener("keydown", function (event) {
+        feelsLike.textContent =
+            `🤗 Feels Like: ${data.main.feels_like}°C`;
 
-    const key = event.key;
+        description.textContent =
+            `☁️ Weather: ${data.weather[0].description}`;
 
-    if (
-        (key >= "0" && key <= "9") ||
-        key === "+" ||
-        key === "-" ||
-        key === "*" ||
-        key === "/" ||
-        key === "."
-    ) {
+        humidity.textContent =
+            `💧 Humidity: ${data.main.humidity}%`;
 
-        display.value += key;
+        wind.textContent =
+            `🌬️ Wind Speed: ${data.wind.speed} m/s`;
 
-    } else if (key === "Enter") {
+        const iconCode = data.weather[0].icon;
 
-        try {
+        weatherIcon.src =
+            `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
 
-            const expression = display.value;
+        weatherIcon.alt =
+            data.weather[0].description;
 
-            const result = eval(expression);
+        /* SAVE LAST CITY */
 
-            display.value = result;
+        localStorage.setItem("lastCity", city);
 
-            const historyItem =
-                `${expression} = ${result}`;
+    } catch (error) {
 
-            history.unshift(historyItem);
+        console.error(error);
+        alert("Error fetching weather data");
 
-            localStorage.setItem(
-                "history",
-                JSON.stringify(history)
-            );
+    } finally {
 
-            addHistory(historyItem);
+        searchBtn.textContent = "Search";
+        searchBtn.disabled = false;
 
-        } catch {
+    }
+}
 
-            display.value = "Error";
+/* =========================
+   ENTER KEY SEARCH
+========================= */
 
-        }
+cityInput.addEventListener("keypress", function(event) {
 
-    } else if (key === "Backspace") {
-
-        display.value = display.value.slice(0, -1);
-
-    } else if (key === "Escape") {
-
-        display.value = "";
-
+    if (event.key === "Enter") {
+        getWeather();
     }
 
 });
 
-// Load Saved Theme
-if (localStorage.getItem("darkMode") === "enabled") {
+/* =========================
+   DARK MODE
+========================= */
 
-    document.body.classList.add("dark-mode");
-    darkModeBtn.textContent = "☀️ Light Mode";
+const savedTheme = localStorage.getItem("theme");
 
+if (savedTheme === "dark") {
+    document.body.classList.add("dark");
+    themeToggle.textContent = "☀️ Light Mode";
 }
 
-// Dark Mode Toggle
-darkModeBtn.addEventListener("click", function () {
+themeToggle.addEventListener("click", () => {
 
-    document.body.classList.toggle("dark-mode");
+    document.body.classList.toggle("dark");
 
-    if (document.body.classList.contains("dark-mode")) {
+    if (document.body.classList.contains("dark")) {
 
-        localStorage.setItem("darkMode", "enabled");
-        darkModeBtn.textContent = "☀️ Light Mode";
+        localStorage.setItem("theme", "dark");
+        themeToggle.textContent = "☀️ Light Mode";
 
     } else {
 
-        localStorage.setItem("darkMode", "disabled");
-        darkModeBtn.textContent = "🌙 Dark Mode";
+        localStorage.setItem("theme", "light");
+        themeToggle.textContent = "🌙 Dark Mode";
 
     }
 
 });
 
-// Add History Item to UI
-function addHistory(text) {
+/* =========================
+   LOAD LAST SEARCHED CITY
+========================= */
 
-    const li = document.createElement("li");
+window.addEventListener("load", () => {
 
-    li.textContent = text;
+    const lastCity = localStorage.getItem("lastCity");
 
-    historyList.prepend(li);
+    if (lastCity) {
 
-}
+        cityInput.value = lastCity;
+        getWeather();
+
+    }
+
+});
