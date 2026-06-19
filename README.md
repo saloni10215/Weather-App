@@ -77,7 +77,7 @@ The application displays:
 
 ## 👨‍💻 Author
 
-Developed by [Your Name]
+Developed by saloni
 
 ## 📄 License
 
