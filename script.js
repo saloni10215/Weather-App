@@ -9,6 +9,9 @@ const humidity = document.getElementById("humidity");
 const description = document.getElementById("description");
 const weatherIcon = document.getElementById("weatherIcon");
 
+const sunrise = document.getElementById("sunrise");
+const sunset = document.getElementById("sunset");
+
 const themeToggle = document.getElementById("themeToggle");
 
 // Weather Function
@@ -44,6 +47,22 @@ async function getWeather(city){
 
         weatherIcon.src =
             `https://openweathermap.org/img/wn/${iconCode}@4x.png`;
+
+        // Sunrise & Sunset
+
+        sunrise.textContent = new Date(
+            data.sys.sunrise * 1000
+        ).toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        sunset.textContent = new Date(
+            data.sys.sunset * 1000
+        ).toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
 
         localStorage.setItem(
             "lastCity",
