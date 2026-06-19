@@ -8,33 +8,47 @@
 </head>
 <body>
 
-<div class="weather-container">
+<div class="container">
 
-    <div class="top-bar">
-        <h1>Weather App</h1>
-        <button id="themeToggle">🌙</button>
-    </div>
+    <div class="weather-card">
 
-    <div class="search-box">
-        <input
-            type="text"
-            id="cityInput"
-            placeholder="Enter city name"
-        >
-        <button id="searchBtn">Search</button>
-    </div>
+        <div class="top-bar">
+            <h1>🌦 Weather App</h1>
+            <button id="themeToggle">🌙</button>
+        </div>
 
-    <div id="weatherResult">
+        <div class="search-box">
+            <input
+                type="text"
+                id="cityInput"
+                placeholder="Enter city name..."
+            >
+            <button id="searchBtn">Search</button>
+        </div>
 
-        <img id="weatherIcon" src="" alt="Weather Icon">
+        <div id="weatherResult">
 
-        <h2 id="cityName">City Name</h2>
+            <img id="weatherIcon" src="" alt="Weather Icon">
 
-        <p id="temperature">🌡️ Temperature: --°C</p>
+            <h2 id="cityName">Search a City</h2>
 
-        <p id="description">☁️ Weather: --</p>
+            <div class="weather-info">
 
-        <p id="humidity">💧 Humidity: --%</p>
+                <div class="info-box">
+                    <h3 id="temperature">--°C</h3>
+                    <p>Temperature</p>
+                </div>
+
+                <div class="info-box">
+                    <h3 id="humidity">--%</h3>
+                    <p>Humidity</p>
+                </div>
+
+            </div>
+
+            <p id="description">Weather Details</p>
+
+        </div>
 
     </div>
 

@@ -1,20 +1,21 @@
-const searchBtn = document.getElementById("searchBtn");
+const apiKey = "df5e97aeee149fc442b23eedbb625a10";
+
 const cityInput = document.getElementById("cityInput");
+const searchBtn = document.getElementById("searchBtn");
 
 const cityName = document.getElementById("cityName");
 const temperature = document.getElementById("temperature");
-const description = document.getElementById("description");
 const humidity = document.getElementById("humidity");
+const description = document.getElementById("description");
 const weatherIcon = document.getElementById("weatherIcon");
 
 const themeToggle = document.getElementById("themeToggle");
 
-const apiKey = "df5e97aeee149fc442b23eedbb625a10";
+// Weather Function
 
-// Fetch Weather
-async function getWeather(city) {
+async function getWeather(city){
 
-    try {
+    try{
 
         const response = await fetch(
             `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
@@ -22,91 +23,115 @@ async function getWeather(city) {
 
         const data = await response.json();
 
-        if (Number(data.cod) !== 200) {
-            alert(data.message);
+        if(Number(data.cod)!==200){
+            alert("City not found");
             return;
         }
 
         cityName.textContent = data.name;
 
         temperature.textContent =
-            `🌡️ Temperature: ${data.main.temp}°C`;
-
-        description.textContent =
-            `☁️ Weather: ${data.weather[0].description}`;
+            `${Math.round(data.main.temp)}°C`;
 
         humidity.textContent =
-            `💧 Humidity: ${data.main.humidity}%`;
+            `${data.main.humidity}%`;
 
-        const iconCode = data.weather[0].icon;
-
-        weatherIcon.src =
-            `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
-
-        weatherIcon.alt =
+        description.textContent =
             data.weather[0].description;
 
-        // Save city
-        localStorage.setItem("lastCity", city);
+        const iconCode =
+            data.weather[0].icon;
 
-    } catch (error) {
+        weatherIcon.src =
+            `https://openweathermap.org/img/wn/${iconCode}@4x.png`;
 
-        console.error(error);
-        alert("Error fetching weather data");
+        localStorage.setItem(
+            "lastCity",
+            city
+        );
+
+    }catch(error){
+
+        alert("Error fetching weather");
 
     }
+
 }
 
 // Search Button
-searchBtn.addEventListener("click", () => {
 
-    const city = cityInput.value.trim();
+searchBtn.addEventListener("click",()=>{
 
-    if (city === "") {
-        alert("Please enter a city name");
-        return;
+    const city =
+        cityInput.value.trim();
+
+    if(city){
+        getWeather(city);
     }
-
-    getWeather(city);
 
 });
 
-// Enter Key Support
-cityInput.addEventListener("keypress", function(event){
+// Enter Key
 
-    if(event.key === "Enter"){
-        searchBtn.click();
+cityInput.addEventListener("keypress",(e)=>{
+
+    if(e.key==="Enter"){
+
+        const city =
+            cityInput.value.trim();
+
+        if(city){
+            getWeather(city);
+        }
+
     }
 
 });
 
 // Theme Toggle
-themeToggle.addEventListener("click", () => {
+
+themeToggle.addEventListener("click",()=>{
 
     document.body.classList.toggle("dark");
 
     if(document.body.classList.contains("dark")){
-        localStorage.setItem("theme","dark");
-        themeToggle.textContent = "☀️";
+
+        localStorage.setItem(
+            "theme",
+            "dark"
+        );
+
+        themeToggle.textContent="☀";
+
     }else{
-        localStorage.setItem("theme","light");
-        themeToggle.textContent = "🌙";
+
+        localStorage.setItem(
+            "theme",
+            "light"
+        );
+
+        themeToggle.textContent="🌙";
     }
 
 });
 
-// Load Saved Theme
-const savedTheme = localStorage.getItem("theme");
+// Load Theme
 
-if(savedTheme === "dark"){
+if(localStorage.getItem("theme")==="dark"){
+
     document.body.classList.add("dark");
-    themeToggle.textContent = "☀️";
+    themeToggle.textContent="☀";
+
 }
 
 // Load Last City
-const lastCity = localStorage.getItem("lastCity");
+
+const lastCity =
+    localStorage.getItem("lastCity");
 
 if(lastCity){
+
     cityInput.value = lastCity;
     getWeather(lastCity);
+
 }
